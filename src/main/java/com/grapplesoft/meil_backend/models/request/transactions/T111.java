@@ -12,6 +12,8 @@ public record T111(
         @JsonProperty("fromProjectId")
         Long fromprojectid,
         @JsonProperty("newstatus")
-        Long newstatus
+        int newstatus,
+        @JsonProperty("createdby")
+        Long createdby
 ) {
 }

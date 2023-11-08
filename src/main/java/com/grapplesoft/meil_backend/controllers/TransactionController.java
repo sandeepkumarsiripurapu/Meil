@@ -5,10 +5,7 @@ import com.grapplesoft.meil_backend.builders.TransactionsBuilder;
 import com.grapplesoft.meil_backend.models.Result;
 import com.grapplesoft.meil_backend.models.TransactionMapped;
 import com.grapplesoft.meil_backend.models.entities.Transaction;
-import com.grapplesoft.meil_backend.models.request.transactions.AllotProjectSiteRequestDto;
-import com.grapplesoft.meil_backend.models.request.transactions.ChangeDepartment;
-import com.grapplesoft.meil_backend.models.request.transactions.DeallotProjectSiteRequest;
-import com.grapplesoft.meil_backend.models.request.transactions.EmployeeTransfer;
+import com.grapplesoft.meil_backend.models.request.transactions.*;
 import com.grapplesoft.meil_backend.models.response.ApiResponse;
 import com.grapplesoft.meil_backend.services.transactionService.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +88,37 @@ public class TransactionController extends BaseController {
         Result<Transaction> result = transactionService.rejointempdepu(empt);
         if (result.isSuccess()) {
             return ResponseEntity.ok(ApiResponseBuilder.success(null, "Rejoining Temporary Deputation sucessfully"));
+        } else {
+            return ResponseEntity.badRequest().body(ApiResponseBuilder.badRequest(result.error().getMessage()));
+        }
+    }
+
+
+    @PostMapping(value = "/t107", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<ApiResponse<String>> EmployeeJoiningatSite(@RequestBody Employeejoinsite empt) {
+        Result<Transaction> result = transactionService.T107andT110(empt,"T107");
+        if (result.isSuccess()) {
+            return ResponseEntity.ok(ApiResponseBuilder.success(null, "Employee Joining at Site sucessfully"));
+        } else {
+            return ResponseEntity.badRequest().body(ApiResponseBuilder.badRequest(result.error().getMessage()));
+        }
+    }
+
+    @PostMapping(value = "/t110", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<ApiResponse<String>> ChangeofProjectManager(@RequestBody Employeejoinsite empt) {
+        Result<Transaction> result = transactionService.T107andT110(empt,"T110");
+        if (result.isSuccess()) {
+            return ResponseEntity.ok(ApiResponseBuilder.success(null, "Change of Project Manager sucessfully"));
+        } else {
+            return ResponseEntity.badRequest().body(ApiResponseBuilder.badRequest(result.error().getMessage()));
+        }
+    }
+
+    @PostMapping(value = "/t111", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<ApiResponse<String>> ChangeofProjectStatus(@RequestBody T111 empt) {
+        Result<Transaction> result = transactionService.T111(empt);
+        if (result.isSuccess()) {
+            return ResponseEntity.ok(ApiResponseBuilder.success(null, "Change of Project Status sucessfully"));
         } else {
             return ResponseEntity.badRequest().body(ApiResponseBuilder.badRequest(result.error().getMessage()));
         }

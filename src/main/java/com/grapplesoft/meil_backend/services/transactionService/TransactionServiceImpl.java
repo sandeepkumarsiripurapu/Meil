@@ -7,6 +7,7 @@ import com.grapplesoft.meil_backend.models.entities.*;
 import com.grapplesoft.meil_backend.models.request.transactions.*;
 import com.grapplesoft.meil_backend.repositories.*;
 import com.grapplesoft.meil_backend.services.employeeService.EmployeeService;
+import jakarta.persistence.EntityNotFoundException;
 import org.hibernate.boot.model.internal.DelayedParameterizedTypeBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,10 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -34,6 +32,8 @@ public class TransactionServiceImpl implements TransactionService {
     @Autowired
     private ProjectSiteRepository projsiterepo;
 
+    @Autowired
+    private StatusRepository stsrepo;
     @Autowired
     public TransactionServiceImpl(@Qualifier("transactionRepository") TransactionRepository transactionRepository,
                                   @Qualifier("projectSiteRepository") ProjectSiteRepository projectSiteRepository,
@@ -301,6 +301,7 @@ public class TransactionServiceImpl implements TransactionService {
                         .fromprojectid(fromproject)
                         .toprojectid(toproject)
                         .createuserid(emp)
+                        .employeeid(emp)
                         .date1(empt.date1())
                         .date2(empt.date2())
                         .actiondate(LocalDate.now())
@@ -386,6 +387,7 @@ public class TransactionServiceImpl implements TransactionService {
                         .fromprojectid(fromproject)
                         .toprojectid(toproject)
                         .createuserid(emp)
+                        .employeeid(emp)
                         .date1(empt.date1())
                         .date2(empt.date2())
                         .actiondate(LocalDate.now())
@@ -470,6 +472,7 @@ public class TransactionServiceImpl implements TransactionService {
                         .fromprojectid(fromproject)
                         .toprojectid(toproject)
                         .createuserid(emp)
+                        .employeeid(emp)
                         .date1(empt.date1())
                         .date2(empt.date2())
                         .actiondate(LocalDate.now())
@@ -486,7 +489,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Result<Transaction> T107andT110(Employeejoinsite empjoin) {
+    public Result<Transaction> T107andT110(Employeejoinsite empjoin,String acttype) {
         // Find transactions related to the employee and project
         List<Transaction> trs = transactionRepository.findByProjectIdAndEmployeeId(empjoin.fromprojectid(), empjoin.employeeid());
 
@@ -511,9 +514,15 @@ public class TransactionServiceImpl implements TransactionService {
                 Project fromproject = this.projectRepository.findById(empjoin.fromprojectid()).orElse(null);
                 Projectsite projsite = this.projsiterepo.findById(empjoin.projectsiteid()).orElse(null);
 
-                // Find the action type (T104)
-                Actiontype action = this.getActionType(ActionTypeEnum.T119);
-
+                Actiontype action =new Actiontype();
+                if(Objects.equals(acttype, "T107")) {
+                    // Find the action type (T104)
+                     action = this.getActionType(ActionTypeEnum.T107);
+                }
+                if(Objects.equals(acttype, "T110")) {
+                    // Find the action type (T104)
+                     action = this.getActionType(ActionTypeEnum.T110);
+                }
                 // Find Hsefunctions for the source and target functions
 
                 if (fromproject == null) {
@@ -536,6 +545,7 @@ public class TransactionServiceImpl implements TransactionService {
                 Transaction trsanc = this.addTransaction(Transaction.builder()
                         .actiontypeid(action)
                         .fromprojectid(fromproject)
+                        .employeeid(employeerepository.findById(empjoin.employeeid()).orElse(null))
                         .projectsite(projsite)
                         .createuserid(emp)
                         .date1(empjoin.date1())
@@ -550,6 +560,173 @@ public class TransactionServiceImpl implements TransactionService {
             }
 
         }
+    }
+
+    @Override
+    public Result<Transaction> T116andT117andT118(T116andT117andT1118 empt, String acttype) {
+        // Find transactions related to the employee and project
+        List<Transaction> trs = transactionRepository.findByProjectIdAndEmployeeId(empt.fromprojectid(), empt.employeeid());
+
+        // Initialize a variable to track if a specific action type (ID 2) was found in the transactions
+        boolean result = false;
+
+        // Check each transaction for the desired action type
+        for (Transaction tr : trs) {
+            result = tr.getActiontypeid().getId() == 2;
+        }
+
+        if (result) {
+            // If the desired action type was found, set an error response
+            return Result.failure(new Exception("This Employee's project is already de-allotted"));
+        } else {
+            // If the action type is not found, proceed with the employee transfer
+            Employee emp = employeeService.getEmployeeById(empt.employeeid());
+
+            if (emp != null) {
+
+                // Find the source and target project sites by their IDs
+                Project fromproject = this.projectRepository.findById(empt.fromprojectid()).orElse(null);
+
+
+                Actiontype action =new Actiontype();
+                if(Objects.equals(acttype, "T116")) {
+                    // Find the action type (T104)
+                    action = this.getActionType(ActionTypeEnum.T116);
+                }
+                if(Objects.equals(acttype, "T117")) {
+                    // Find the action type (T104)
+                    action = this.getActionType(ActionTypeEnum.T117);
+                }
+                if(Objects.equals(acttype, "T118")) {
+                    // Find the action type (T104)
+                    action = this.getActionType(ActionTypeEnum.T118);
+                }
+
+
+                if (fromproject == null) {
+                    return Result.failure(new Exception("No record found in fromproject."));
+                }
+
+
+
+                if (action == null) {
+
+                    return Result.failure(new Exception("No record found in  action"));
+                }
+
+                emp.setEditDate(LocalDate.now());
+                employeerepository.save(emp);
+                // Create a new transaction for the employee transfer
+                Transaction trsanc =new Transaction();
+                if(!Objects.equals(acttype, "T118")) {
+                    trsanc = this.addTransaction(Transaction.builder()
+                            .actiontypeid(action)
+                            .actiondate(LocalDate.now())
+                            .fromprojectid(fromproject)
+                            .employeeid(emp)
+                            .createuserid(emp)
+                            .date1(empt.date1())
+                            .date2(empt.date2())
+                            .createdate(LocalDate.now())
+                            .build());
+                }else{
+                    trsanc = this.addTransaction(Transaction.builder()
+                            .actiontypeid(action)
+                            .actiondate(LocalDate.now())
+                            .employeeid(emp)
+                            .createuserid(emp)
+                            .date1(empt.date1())
+                            .date2(empt.date2())
+                            .createdate(LocalDate.now())
+                            .build());
+                }
+
+                // Set a success response with the transaction data
+                return Result.success(trsanc);
+            }else{
+                return Result.failure(new Exception("No Employee found"));
+            }
+
+        }
+    }
+
+    @Override
+    public Result<Transaction> T109(T109 emp) {
+        // Find transactions related to the employee and project
+        List<Transaction> trs = transactionRepository.findByProjectIdAndEmployeeId(emp.fromProjectId(), emp.employeeId());
+
+        // Initialize a variable to track if a specific action type (ID 2) was found in the transactions
+        boolean result = false;
+
+        // Check each transaction for the desired action type
+        for (Transaction tr : trs) {
+            result = tr.getActiontypeid().getId() == 2;
+        }
+
+        if (result) {
+            // If the desired action type was found, set an error response
+            return Result.failure(new Exception("This Employee's project is already de-alloted."));
+        } else {
+            // If the action type is not found, proceed with the department change
+            Employee emp1 = employeeService.getEmployeeById(emp.employeeId());
+
+            if (emp1 != null) {
+                emp1.setEditDate(LocalDate.now());
+
+                // Save the updated employee information
+                employeerepository.save(emp1);
+
+                // Find the project site by its ID
+                Projectsite projectSite = this.projectSiteRepository.findById(emp.fromProjectId()).orElse(null);
+
+                if (projectSite != null) {
+                    // Build a transaction based on ActionTypeEnum.T103 and other information
+                    Actiontype action = this.getActionType(ActionTypeEnum.T109);
+                    Transaction tresult = this.addTransaction(TransactionsBuilder.forT103(action, projectSite, emp1, null,null));
+
+                    if (tresult == null) {
+                        // Set an error response if the transaction is not found
+                        return Result.failure(new Exception("Action type not found."));
+                    } else {
+                        // Set a success response with the transaction data
+                        return Result.success(tresult);
+                    }
+                } else {
+                    // Set an error response if the project site is not found
+                    return Result.failure(new Exception("Project-site not found"));
+                }
+            } else {
+                // Set an error response if the employee is not found
+
+                return Result.failure(new Exception("Employee not found"));
+            }
+        }
+    }
+
+    @Override
+    public Result<Transaction> T111(T111 emp) {
+      Actiontype action = this.getActionType(ActionTypeEnum.T111);
+      Project proj=projectRepository.findById(emp.fromprojectid()).orElse(null);
+      Status sts=stsrepo.findById(emp.newstatus()).orElse(null);
+      Employee em=employeerepository.findById(emp.createdby()).orElse(null);
+      if(proj==null){
+          return Result.failure(new Throwable("No prject found"));
+      }
+        if(sts==null){
+            return Result.failure(new Throwable("No Status found"));
+        }
+        if(em==null){
+            return Result.failure(new Throwable("No Employee found"));
+        }
+
+      Transaction trs=new Transaction();
+      trs.setActiontypeid(action);
+      trs.setActiondate(LocalDate.now());
+      trs.setFromprojectid(proj);
+      trs.setNewstatus(sts);
+      trs.setCreatedate(LocalDate.now());
+      trs.setCreateuserid(em);
+     return  Result.success(this.addTransaction(trs));
     }
 
 

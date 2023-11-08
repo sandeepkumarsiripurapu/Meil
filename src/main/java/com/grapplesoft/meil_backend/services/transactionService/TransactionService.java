@@ -37,5 +37,8 @@ public interface TransactionService {
     Result<Transaction> employeetransfer(EmployeeTransfer empt);
     Result<Transaction> employeetempdepu(EmployeeTransfer empt);
     Result<Transaction> rejointempdepu(EmployeeTransfer empt);
-    Result<Transaction> T107andT110(Employeejoinsite empjoin);
+    Result<Transaction> T107andT110(Employeejoinsite empjoin,String acttype);
+    Result<Transaction> T116andT117andT118(T116andT117andT1118 empt,String acttype);
+    Result<Transaction> T109(T109 emp);
+    Result<Transaction> T111(T111 emp);
 }
