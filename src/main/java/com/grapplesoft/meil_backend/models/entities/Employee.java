@@ -135,6 +135,7 @@ public class Employee {
     private Role role;
 
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
     @Column(name = "is_password_set")
@@ -142,5 +143,6 @@ public class Employee {
 
     // tokens
     @OneToOne(mappedBy = "employee", cascade = CascadeType.MERGE, orphanRemoval = true)
+    @JsonIgnore
     private Token token;
 }
