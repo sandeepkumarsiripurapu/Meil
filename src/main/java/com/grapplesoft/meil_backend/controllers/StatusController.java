@@ -30,10 +30,11 @@ public class StatusController {
     @PutMapping
 
     public  ResponseEntity<?> edit(@RequestBody StatusRequest statusRequest){
-        if (statusService.edit(statusRequest)!=null){
-            return ResponseEntity.ok(ApiResponseBuilder.success(null,"Status Updated Sucessfully"));
+        Result res=statusService.edit(statusRequest);
+        if (res.isSuccess()){
+            return ResponseEntity.ok(ApiResponseBuilder.success(res.value(),"Status Updated Sucessfully"));
         }else {
-            return ResponseEntity.badRequest().body(ApiResponseBuilder.badRequest("Something Went Wrong"));
+            return ResponseEntity.badRequest().body(res.error().getMessage());
         }
     }
 

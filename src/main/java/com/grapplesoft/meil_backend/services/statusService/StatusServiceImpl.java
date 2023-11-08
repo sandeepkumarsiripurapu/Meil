@@ -1,6 +1,7 @@
 package com.grapplesoft.meil_backend.services.statusService;
 
 import com.grapplesoft.meil_backend.models.Result;
+import com.grapplesoft.meil_backend.models.entities.Employee;
 import com.grapplesoft.meil_backend.models.entities.Status;
 import com.grapplesoft.meil_backend.models.request.StatusRequest;
 import com.grapplesoft.meil_backend.repositories.EmployeeRepository;
@@ -28,12 +29,16 @@ public class StatusServiceImpl implements StatusService {
         status.setId(statusRequest.statusid());
         status.setStatus(statusRequest.status());
         status.setCreatedate(LocalDate.now());
-        Status status1 = statusRepository.findById(statusRequest.createuserid()).orElse(null);
-        if (status1 == null) {
-            return Result.failure(new Throwable("No User ID is found "));
+        if(statusRequest.createuserid()!=null) {
+            Employee status1 = employeeRepository.findById(statusRequest.createuserid()).orElse(null);
+            if (status1 == null) {
+                return Result.failure(new Throwable("No User ID is found "));
+            }
+            status.setCreateuserid(status1);
         }
-        Status status2 = statusRepository.save(status);
-        return Result.success(status2);
+       Status status2 = statusRepository.save(status);
+            return Result.success(status2);
+
     }
 
     @Override
@@ -42,13 +47,16 @@ public class StatusServiceImpl implements StatusService {
         if (status != null) {
             status.setStatus(statusRequest.status());
             status.setEditdate(LocalDate.now());
-            Status status1 = statusRepository.findById(statusRequest.edituserid()).orElse(null);
-            if (status1 != null) {
-                return Result.failure((new Throwable("No ID Found")));
+            if (statusRequest.edituserid() != null) {
+                Status status1 = statusRepository.findById(statusRequest.edituserid()).orElse(null);
+                if (status1 != null) {
+                    return Result.failure((new Throwable("No ID Found")));
+                }
             }
-            Status status2 = statusRepository.save(status);
-            return Result.success(status2);
-        }
+                Status status2 = statusRepository.save(status);
+                return Result.success(status2);
+            }
+
         return  null;
     }
 
