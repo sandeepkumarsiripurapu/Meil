@@ -200,7 +200,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee authenticateEmployee(String emailOffice, String password) {
         Employee fetchedEmployee = this.employeeRepository.findByEmailOffice(emailOffice).orElse(null);
-
         // if email exists and password matches, return the employee object
         if (fetchedEmployee != null && passwordEncoder.matches(password, fetchedEmployee.getPassword())) {
             return fetchedEmployee;

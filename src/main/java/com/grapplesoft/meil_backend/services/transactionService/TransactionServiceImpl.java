@@ -4,10 +4,7 @@ import com.grapplesoft.meil_backend.builders.TransactionsBuilder;
 import com.grapplesoft.meil_backend.enums.ActionTypeEnum;
 import com.grapplesoft.meil_backend.models.Result;
 import com.grapplesoft.meil_backend.models.entities.*;
-import com.grapplesoft.meil_backend.models.request.transactions.AllotProjectSiteRequestDto;
-import com.grapplesoft.meil_backend.models.request.transactions.ChangeDepartment;
-import com.grapplesoft.meil_backend.models.request.transactions.DeallotProjectSiteRequest;
-import com.grapplesoft.meil_backend.models.request.transactions.EmployeeTransfer;
+import com.grapplesoft.meil_backend.models.request.transactions.*;
 import com.grapplesoft.meil_backend.repositories.*;
 import com.grapplesoft.meil_backend.services.employeeService.EmployeeService;
 import org.hibernate.boot.model.internal.DelayedParameterizedTypeBean;
@@ -33,6 +30,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
     private HsefunctionRepository hserepo;
+
+    @Autowired
+    private ProjectSiteRepository projsiterepo;
 
     @Autowired
     public TransactionServiceImpl(@Qualifier("transactionRepository") TransactionRepository transactionRepository,
@@ -472,6 +472,73 @@ public class TransactionServiceImpl implements TransactionService {
                         .createuserid(emp)
                         .date1(empt.date1())
                         .date2(empt.date2())
+                        .actiondate(LocalDate.now())
+                        .createdate(LocalDate.now())
+                        .build());
+
+                // Set a success response with the transaction data
+                return Result.success(trsanc);
+            }else{
+                return Result.failure(new Exception("No Employee found"));
+            }
+
+        }
+    }
+
+    @Override
+    public Result<Transaction> T107andT110(Employeejoinsite empjoin) {
+        // Find transactions related to the employee and project
+        List<Transaction> trs = transactionRepository.findByProjectIdAndEmployeeId(empjoin.fromprojectid(), empjoin.employeeid());
+
+        // Initialize a variable to track if a specific action type (ID 2) was found in the transactions
+        boolean result = false;
+
+        // Check each transaction for the desired action type
+        for (Transaction tr : trs) {
+            result = tr.getActiontypeid().getId() == 2;
+        }
+
+        if (result) {
+            // If the desired action type was found, set an error response
+            return Result.failure(new Exception("This Employee's project is already de-allotted"));
+        } else {
+            // If the action type is not found, proceed with the employee transfer
+            Employee emp = employeeService.getEmployeeById(empjoin.employeeid());
+
+            if (emp != null) {
+
+                // Find the source and target project sites by their IDs
+                Project fromproject = this.projectRepository.findById(empjoin.fromprojectid()).orElse(null);
+                Projectsite projsite = this.projsiterepo.findById(empjoin.projectsiteid()).orElse(null);
+
+                // Find the action type (T104)
+                Actiontype action = this.getActionType(ActionTypeEnum.T119);
+
+                // Find Hsefunctions for the source and target functions
+
+                if (fromproject == null) {
+                    return Result.failure(new Exception("No record found in fromproject."));
+                }
+
+                if (projsite == null) {
+
+                    return Result.failure(new Exception("No record found in  toproject."));
+                }
+
+                if (action == null) {
+
+                    return Result.failure(new Exception("No record found in  action"));
+                }
+
+                emp.setEditDate(LocalDate.now());
+                employeerepository.save(emp);
+                // Create a new transaction for the employee transfer
+                Transaction trsanc = this.addTransaction(Transaction.builder()
+                        .actiontypeid(action)
+                        .fromprojectid(fromproject)
+                        .projectsite(projsite)
+                        .createuserid(emp)
+                        .date1(empjoin.date1())
                         .actiondate(LocalDate.now())
                         .createdate(LocalDate.now())
                         .build());

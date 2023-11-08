@@ -41,7 +41,7 @@ public class StateController {
     // Method to handle HTTP GET requests for retrieving all states
     @GetMapping
     public ResponseEntity<?> getall() {
-        var res = stateservice.getall().stream().map(StateBuilder::buildStateResponse).toList();
+        var res = stateservice.getall();
         return ResponseEntity.ok(res);
     }
 

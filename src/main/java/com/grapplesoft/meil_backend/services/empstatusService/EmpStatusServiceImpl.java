@@ -28,9 +28,10 @@ public class EmpStatusServiceImpl implements EmpStatusService{
         empStatus.setId(empStatusRequest.id());
         empStatus.setEmpstatus(empStatusRequest.empstatus());
         empStatus.setCreatedate(LocalDate.now());
-        Employee employee=employeeRepository.findById(empStatusRequest.createuserid()).orElse(null);
-        if (employee==null){
-            return Result.failure(new Throwable("Create User ID is Not Found"));
+
+        if (empStatusRequest.createuserid()==null){
+            Employee employee=employeeRepository.findById(empStatusRequest.createuserid()).orElse(null);
+            empStatus.setCreateuserid(employee);
         }
         EmpStatus empStatus1=empStatusRepository.save(empStatus);
         return Result.success(empStatus1);
@@ -42,12 +43,12 @@ public class EmpStatusServiceImpl implements EmpStatusService{
         if (empStatus !=null){
             empStatus.setEmpstatus(empStatusRequest.empstatus());
             empStatus.setEditdate(LocalDate.now());
-            EmpStatus empStatus1=empStatusRepository.findById(empStatusRequest.edituserid()).orElse(null);
-            if (empStatus==null){
-                return Result.failure(new Throwable("Edit User ID is not Found"));
+            if (empStatusRequest.edituserid()==null){
+                Employee employee=employeeRepository.findById(empStatusRequest.edituserid()).orElse(null);
+                empStatus.setEdituserid(employee);
             }
             EmpStatus empStatus2=empStatusRepository.save(empStatus);
-            return Result.success(empStatus1);
+            return Result.success(empStatus2);
         }else {
             return null;
         }

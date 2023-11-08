@@ -5,7 +5,7 @@ public record EmpStatusRequest(
         Integer id,
         String empstatus,
         Long createuserid,
-        Integer edituserid,
+        Long edituserid,
         boolean isdeleted
 ) {
 }

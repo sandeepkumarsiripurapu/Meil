@@ -2,10 +2,7 @@ package com.grapplesoft.meil_backend.services.transactionService;
 
 import com.grapplesoft.meil_backend.models.Result;
 import com.grapplesoft.meil_backend.models.entities.Transaction;
-import com.grapplesoft.meil_backend.models.request.transactions.AllotProjectSiteRequestDto;
-import com.grapplesoft.meil_backend.models.request.transactions.ChangeDepartment;
-import com.grapplesoft.meil_backend.models.request.transactions.DeallotProjectSiteRequest;
-import com.grapplesoft.meil_backend.models.request.transactions.EmployeeTransfer;
+import com.grapplesoft.meil_backend.models.request.transactions.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.reactive.ReactiveResourceSynchronization;
 
@@ -40,4 +37,5 @@ public interface TransactionService {
     Result<Transaction> employeetransfer(EmployeeTransfer empt);
     Result<Transaction> employeetempdepu(EmployeeTransfer empt);
     Result<Transaction> rejointempdepu(EmployeeTransfer empt);
+    Result<Transaction> T107andT110(Employeejoinsite empjoin);
 }

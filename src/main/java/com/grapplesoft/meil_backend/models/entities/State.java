@@ -1,5 +1,6 @@
 package com.grapplesoft.meil_backend.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -39,6 +40,6 @@ public class State {
     private Employee edituserid;
 
     @Column(name = "isdeleted")
-    private Boolean isdeleted;
+    private Boolean isdeleted=false;
 
 }
