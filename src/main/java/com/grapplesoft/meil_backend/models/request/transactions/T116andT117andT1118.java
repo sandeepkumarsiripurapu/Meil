@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 
-public record EmployeeTransfer(
-        @JsonProperty("actiontype")
+public record T116andT117andT1118(
+        @JsonProperty("projectId")
         Long Actiontype,
         @JsonProperty("actiondate")
         LocalDate actiondate,
@@ -13,15 +13,9 @@ public record EmployeeTransfer(
         Long employeeid,
         @JsonProperty("fromProjectId")
         Long fromprojectid,
-        @JsonProperty("toprojectid")
-        Long toprojectid,
-        @JsonProperty("date1")
-        LocalDate date1,
         @JsonProperty("date2")
         LocalDate date2,
-        @JsonProperty("function1")
-        String function1,
-        @JsonProperty("function2")
-        String function2
+        @JsonProperty("date1")
+        LocalDate date1
 ) {
 }
