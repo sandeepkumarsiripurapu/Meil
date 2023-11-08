@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProjectSiteRepository extends JpaRepository<Projectsite, Long> {
+    Projectsite findByIdAndIsdeleted(Long integer,boolean projsiteb);
 }

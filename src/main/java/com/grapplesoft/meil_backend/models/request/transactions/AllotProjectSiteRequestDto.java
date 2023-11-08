@@ -38,7 +38,7 @@ public record AllotProjectSiteRequestDto(
         @JsonProperty("courierPmobile")
         String courierPmobile,
         @JsonProperty("addressId")
-        Long addressId,
+        int addressId,
         @JsonProperty("latitude")
         BigDecimal latitude,
         @JsonProperty("longitude")
