@@ -10,7 +10,7 @@ import com.grapplesoft.meil_backend.models.entities.Token;
 import java.time.LocalDate;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public record EmployeeWithoutPassword(
+public record EmployeeWithToken(
 
         @JsonProperty("employeeId")
         Long employeeId,

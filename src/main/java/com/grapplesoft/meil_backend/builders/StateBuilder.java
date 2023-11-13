@@ -10,9 +10,9 @@ public class StateBuilder {
                 state.getStatecode(),
                 state.getStatename(),
                 state.getCreatedate(),
-                state.getCreateuserid() != null ? EmployeeBuilder.buildEmployeeWithoutPassword(state.getCreateuserid()) : null,
+                state.getCreateuserid() != null ? EmployeeBuilder.buildEmployeeWithoutCreds(state.getCreateuserid()) : null,
                 state.getEditdate(),
-                state.getEdituserid() != null ? EmployeeBuilder.buildEmployeeWithoutPassword(state.getEdituserid()) : null,
+                state.getEdituserid() != null ? EmployeeBuilder.buildEmployeeWithoutCreds(state.getEdituserid()) : null,
                 state.getIsdeleted()
         );
     }

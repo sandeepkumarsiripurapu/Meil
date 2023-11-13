@@ -2,10 +2,7 @@ package com.grapplesoft.meil_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.grapplesoft.meil_backend.models.entities.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDate;
 
@@ -15,12 +12,12 @@ public record TransactionMapped(
         long id,
         Actiontype actiontypeid,
         LocalDate actiondate,
-        EmployeeWithoutPassword employeeid,
+        EmployeeWithToken employeeid,
         Project fromprojectid,
         Project toprojectid,
         Projectsite projectsite,
-        EmployeeWithoutPassword hsecoordid,
-        EmployeeWithoutPassword hsemgrid,
+        EmployeeWithToken hsecoordid,
+        EmployeeWithToken hsemgrid,
         Long hsemgstatusid,
         LocalDate date1,
 
@@ -36,13 +33,13 @@ public record TransactionMapped(
         Boolean isactivated,
         LocalDate createdate,
 
-        EmployeeWithoutPassword createuserid,
+        EmployeeWithToken createuserid,
 
         LocalDate editdate,
 
-        EmployeeWithoutPassword edituserid,
-        EmployeeWithoutPassword isdeleted,
+        EmployeeWithToken edituserid,
+        EmployeeWithToken isdeleted,
 
-        EmployeeWithoutPassword isapproved
+        EmployeeWithToken isapproved
 ) {
 }

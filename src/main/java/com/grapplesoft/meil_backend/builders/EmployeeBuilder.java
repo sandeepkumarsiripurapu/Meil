@@ -1,13 +1,14 @@
 package com.grapplesoft.meil_backend.builders;
 
-import com.grapplesoft.meil_backend.models.EmployeeWithoutPassword;
+import com.grapplesoft.meil_backend.models.EmployeeWithoutCreds;
+import com.grapplesoft.meil_backend.models.EmployeeWithToken;
 import com.grapplesoft.meil_backend.models.entities.Employee;
 import com.grapplesoft.meil_backend.models.entities.Role;
 import com.grapplesoft.meil_backend.models.request.AddEmployeeRequest;
 
 public class EmployeeBuilder {
-    public static EmployeeWithoutPassword buildEmployeeWithoutPassword(Employee employee) {
-        return new EmployeeWithoutPassword(
+    public static EmployeeWithToken buildEmployeeWithoutPassword(Employee employee) {
+        return new EmployeeWithToken(
                 employee.getId(),
                 employee.getEmployeeFirstName(),
                 employee.getEmployeeLastName(),
@@ -29,6 +30,31 @@ public class EmployeeBuilder {
                 employee.getWhatsAppNum(),
                 employee.getRemarks(),
                 employee.getToken()
+        );
+    }
+
+    public static EmployeeWithoutCreds buildEmployeeWithoutCreds(Employee employee) {
+        return new EmployeeWithoutCreds(
+                employee.getId(),
+                employee.getEmployeeFirstName(),
+                employee.getEmployeeLastName(),
+                employee.getDesignation(),
+                employee.getRole(),
+                employee.getDateOfBirth(),
+                employee.getDateOfJoining(),
+                employee.getDrivingLicense(),
+                employee.getDeptCode(),
+                employee.getProjCode(),
+                employee.getHseLeadership(),
+                employee.getHseCompLevel(),
+                employee.getHseCompPoints(),
+                employee.getEmailOffice(),
+                employee.getEmail2(),
+                employee.getMobileOffice(),
+                employee.getMobile2(),
+                employee.getMobile3(),
+                employee.getWhatsAppNum(),
+                employee.getRemarks()
         );
     }
 

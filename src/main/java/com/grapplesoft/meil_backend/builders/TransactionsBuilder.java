@@ -1,16 +1,15 @@
 package com.grapplesoft.meil_backend.builders;
 
 import com.grapplesoft.meil_backend.enums.ActionTypeEnum;
-import com.grapplesoft.meil_backend.models.EmployeeWithoutPassword;
+import com.grapplesoft.meil_backend.models.EmployeeWithToken;
 import com.grapplesoft.meil_backend.models.TransactionMapped;
 import com.grapplesoft.meil_backend.models.entities.*;
-import com.grapplesoft.meil_backend.models.request.transactions.ChangeDepartment;
 
 import java.time.LocalDate;
 
 public class TransactionsBuilder {
     public static TransactionMapped buildMapped(Transaction transaction) {
-        EmployeeWithoutPassword hseCoordPatch = null;
+        EmployeeWithToken hseCoordPatch = null;
         if (transaction.getHsecoordid() != null) {
             hseCoordPatch = EmployeeBuilder.buildEmployeeWithoutPassword(transaction.getHsecoordid());
         }
