@@ -2,7 +2,7 @@ package com.grapplesoft.meil_backend.services.employeeService;
 
 import com.grapplesoft.meil_backend.builders.EmployeeBuilder;
 import com.grapplesoft.meil_backend.models.EmployeeDto;
-import com.grapplesoft.meil_backend.models.EmployeeWithoutPassword;
+import com.grapplesoft.meil_backend.models.EmployeeWithToken;
 import com.grapplesoft.meil_backend.models.entities.Employee;
 import com.grapplesoft.meil_backend.models.entities.Role;
 import com.grapplesoft.meil_backend.models.entities.Token;
@@ -110,7 +110,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return
      */
     @Override
-    public EmployeeWithoutPassword updateEmployee(UpdateEmployeeRequest request) {
+    public EmployeeWithToken updateEmployee(UpdateEmployeeRequest request) {
         // TODO: add department {@link Department}
         // TODO: add project @link Project
         // TODO: add leadership code (@link HseLeaderShip)

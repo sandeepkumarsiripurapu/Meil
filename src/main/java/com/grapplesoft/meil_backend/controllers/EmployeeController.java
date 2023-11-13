@@ -3,7 +3,7 @@ package com.grapplesoft.meil_backend.controllers;
 
 import com.grapplesoft.meil_backend.builders.ApiResponseBuilder;
 import com.grapplesoft.meil_backend.builders.EmployeeBuilder;
-import com.grapplesoft.meil_backend.models.EmployeeWithoutPassword;
+import com.grapplesoft.meil_backend.models.EmployeeWithToken;
 import com.grapplesoft.meil_backend.models.PayloadDto;
 import com.grapplesoft.meil_backend.models.entities.Employee;
 import com.grapplesoft.meil_backend.models.pagination.PagedListData;
@@ -38,7 +38,7 @@ public class EmployeeController extends BaseController {
     }
 
     @PostMapping(value = "/add", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<ApiResponse<EmployeeWithoutPassword>> postEmployee(
+    public ResponseEntity<ApiResponse<EmployeeWithToken>> postEmployee(
             @Valid @RequestBody AddEmployeeRequest request
     ) {
         Employee employee = this.employeeService.addEmployee(request);
@@ -49,16 +49,16 @@ public class EmployeeController extends BaseController {
             );
         }
 
-        EmployeeWithoutPassword response = EmployeeBuilder.buildEmployeeWithoutPassword(employee);
-        ApiResponse<EmployeeWithoutPassword> apiResponse = ApiResponseBuilder.success(HttpStatus.CREATED, response, "Employee added successfully");
+        EmployeeWithToken response = EmployeeBuilder.buildEmployeeWithoutPassword(employee);
+        ApiResponse<EmployeeWithToken> apiResponse = ApiResponseBuilder.success(HttpStatus.CREATED, response, "Employee added successfully");
         return ResponseEntity.ok(apiResponse);
     }
 
     @PutMapping(value = "/update", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<ApiResponse<EmployeeWithoutPassword>> updateEmployee(
+    public ResponseEntity<ApiResponse<EmployeeWithToken>> updateEmployee(
             @RequestBody UpdateEmployeeRequest request
     ) {
-        EmployeeWithoutPassword employee = this.employeeService.updateEmployee(request);
+        EmployeeWithToken employee = this.employeeService.updateEmployee(request);
         if (employee != null) {
             return ResponseEntity.ok(ApiResponseBuilder.success(employee, "Employee updated successfully"));
         } else {
@@ -70,26 +70,26 @@ public class EmployeeController extends BaseController {
 
 
     @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<ApiResponse<EmployeeWithoutPassword>> loginEmployee(
+    public ResponseEntity<ApiResponse<EmployeeWithToken>> loginEmployee(
             @Valid @RequestBody EmployeeLoginRequest request
     ) {
         Employee employee = this.employeeService.authenticateEmployee(request.emailOffice(), request.password());
-        EmployeeWithoutPassword response = EmployeeBuilder.buildEmployeeWithoutPassword(employee);
-        ApiResponse<EmployeeWithoutPassword> apiResponse = ApiResponseBuilder.success(HttpStatus.CREATED, response, "Employee logged in successfully");
+        EmployeeWithToken response = EmployeeBuilder.buildEmployeeWithoutPassword(employee);
+        ApiResponse<EmployeeWithToken> apiResponse = ApiResponseBuilder.success(HttpStatus.CREATED, response, "Employee logged in successfully");
         return ResponseEntity.ok(apiResponse);
     }
 
     @GetMapping(value = "/", produces = "application/json")
-    public ResponseEntity<ApiResponse<EmployeeWithoutPassword>> getEmployee(
+    public ResponseEntity<ApiResponse<EmployeeWithToken>> getEmployee(
             @RequestHeader(value = StringStore.TOKEN_HEADER_KEY) String authHeader
     ) {
         PayloadDto payload = JwtTokenUtility.getPayloadFromAuthHeader(authHeader);
 
         if (payload != null && payload.emailOffice() != null) {
             Employee employee = this.employeeService.getEmployeeByEmailOffice(payload.emailOffice());
-            EmployeeWithoutPassword res = EmployeeBuilder.buildEmployeeWithoutPassword(employee);
+            EmployeeWithToken res = EmployeeBuilder.buildEmployeeWithoutPassword(employee);
 
-            ApiResponse<EmployeeWithoutPassword> apiRes = ApiResponseBuilder.success(res, "Employee fetched successfully");
+            ApiResponse<EmployeeWithToken> apiRes = ApiResponseBuilder.success(res, "Employee fetched successfully");
             return ResponseEntity.ok(apiRes);
         } else {
             return ResponseEntity.badRequest().body(
@@ -133,18 +133,18 @@ public class EmployeeController extends BaseController {
 
 
     @GetMapping(value = "/all", produces = "application/json")
-    public ResponseEntity<ApiResponse<PagedListData<EmployeeWithoutPassword>>> getAllEmployees() {
+    public ResponseEntity<ApiResponse<PagedListData<EmployeeWithToken>>> getAllEmployees() {
         PagedListData<Employee> employees = this.employeeService.gellAllEmployees(null, null);
-        List<EmployeeWithoutPassword> empWoPass = new ArrayList<>();
+        List<EmployeeWithToken> empWoPass = new ArrayList<>();
 
         for (var employee : employees.getData()) {
             empWoPass.add(EmployeeBuilder.buildEmployeeWithoutPassword(employee));
         }
 
-        PagedListData<EmployeeWithoutPassword> res = PaginationUtility.buildPagedListData(empWoPass, employees.getTotalElements(), employees.getTotalPages(), employees.getCurrentPage(), employees.getPageSize());
+        PagedListData<EmployeeWithToken> res = PaginationUtility.buildPagedListData(empWoPass, employees.getTotalElements(), employees.getTotalPages(), employees.getCurrentPage(), employees.getPageSize());
 
 
-        ApiResponse<PagedListData<EmployeeWithoutPassword>> apiResponse = ApiResponseBuilder.success(res, "Employees fetched successfully");
+        ApiResponse<PagedListData<EmployeeWithToken>> apiResponse = ApiResponseBuilder.success(res, "Employees fetched successfully");
 
         return ResponseEntity.ok(apiResponse);
     }
