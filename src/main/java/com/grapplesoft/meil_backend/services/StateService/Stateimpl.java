@@ -1,8 +1,10 @@
 package com.grapplesoft.meil_backend.services.StateService;
 
+import com.grapplesoft.meil_backend.builders.StateBuilder;
 import com.grapplesoft.meil_backend.models.entities.Sector;
 import com.grapplesoft.meil_backend.models.entities.State;
 import com.grapplesoft.meil_backend.models.request.StateRequest;
+import com.grapplesoft.meil_backend.models.response.StateResponse;
 import com.grapplesoft.meil_backend.repositories.EmployeeRepository;
 import com.grapplesoft.meil_backend.repositories.StateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,10 +80,14 @@ public class Stateimpl implements Stateser {
      * @return ResponseEntity containing the list of all State entities
      */
     @Override
-    public List<State> getall() {
+    public List<StateResponse> getall() {
         // Retrieving all states from the repository
         List<State> res = staterepository.findAll();
-        return (res);
+        List<StateResponse> stsresp=new ArrayList<>();
+        for(State sts:res){
+            stsresp.add(StateBuilder.buildStateResponse(sts));
+        }
+        return (stsresp);
     }
 
     /**
