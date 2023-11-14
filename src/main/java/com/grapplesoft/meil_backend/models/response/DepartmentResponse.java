@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public record DepartmentResponse(
         @JsonProperty("deptCode")
-        String Code,
+
         String deptCode,
 
         @JsonProperty("deptName")
