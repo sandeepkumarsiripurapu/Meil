@@ -4,7 +4,7 @@ import com.grapplesoft.meil_backend.models.entities.Address;
 import com.grapplesoft.meil_backend.models.response.AddressResponse;
 
 public class AddressBuilder {
-    public AddressResponse buildaddressResponse(Address address){
+    public static AddressResponse buildaddressResponse(Address address){
         return  new AddressResponse(
                 address.getId(),
                 address.getAddressline1(),

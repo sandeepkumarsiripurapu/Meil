@@ -1,10 +1,12 @@
 package com.grapplesoft.meil_backend.services.addressService;
 
+import com.grapplesoft.meil_backend.builders.AddressBuilder;
 import com.grapplesoft.meil_backend.models.Result;
 import com.grapplesoft.meil_backend.models.entities.Address;
 import com.grapplesoft.meil_backend.models.entities.Employee;
 import com.grapplesoft.meil_backend.models.entities.State;
 import com.grapplesoft.meil_backend.models.request.AddressRequest;
+import com.grapplesoft.meil_backend.models.response.AddressResponse;
 import com.grapplesoft.meil_backend.repositories.AddressRepository;
 import com.grapplesoft.meil_backend.repositories.EmployeeRepository;
 import com.grapplesoft.meil_backend.repositories.StateRepository;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,9 +89,13 @@ public class AddressServiceImpl  implements AddressService{
 
 
     @Override
-    public List<Address> getall() {
+    public List<AddressResponse> getall() {
         List<Address> addressList=addressRepository.findAll();
-        return addressList;
+        List<AddressResponse> ars=new ArrayList<>();
+        for(Address ads:addressList){
+            ars.add(AddressBuilder.buildaddressResponse(ads));
+        }
+        return ars;
     }
 
     @Override

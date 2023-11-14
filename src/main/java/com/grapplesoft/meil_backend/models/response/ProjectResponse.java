@@ -34,7 +34,7 @@ public record ProjectResponse(
         @JsonProperty("projvalue")
         BigDecimal projvalue,
         @JsonProperty("isoandm")
-        StateResponse isoandm,
+        Boolean isoandm,
         @JsonProperty("remarks")
         String remarks,
 

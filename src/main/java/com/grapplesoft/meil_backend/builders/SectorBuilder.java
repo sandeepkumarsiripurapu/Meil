@@ -5,7 +5,7 @@ import com.grapplesoft.meil_backend.models.response.SectorResponse;
 
 public class SectorBuilder {
     //convert sector data into sector response
-    public SectorResponse generatesector(Sector sector){
+    public static SectorResponse generatesector(Sector sector){
         return new SectorResponse(
                 sector.getSectorcode(),
                 sector.getSectorname(),

@@ -1,13 +1,16 @@
 package com.grapplesoft.meil_backend.services.departmentService;
 
+import com.grapplesoft.meil_backend.builders.DepartmentBuilder;
 import com.grapplesoft.meil_backend.models.entities.Department;
 import com.grapplesoft.meil_backend.models.request.DepartmentRequest;
+import com.grapplesoft.meil_backend.models.response.DepartmentResponse;
 import com.grapplesoft.meil_backend.repositories.DepartmentRepository;
 import com.grapplesoft.meil_backend.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -56,9 +59,13 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public List<Department> getall() {
+    public List<DepartmentResponse> getall() {
         // Retrieving all departments from the repository
-        return departmentRepository.findAll();
+        List<DepartmentResponse> deptres=new ArrayList<>();
+        for(Department dept: departmentRepository.findAll()){
+            deptres.add(DepartmentBuilder.builddepartmentResponse(dept));
+        }
+        return  deptres;
     }
 
     @Override

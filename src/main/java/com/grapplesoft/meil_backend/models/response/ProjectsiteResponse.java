@@ -15,7 +15,7 @@ public record ProjectsiteResponse(
         @JsonProperty("projsiteId")
         Long Id,
         @JsonProperty("projId")
-        Project projId,
+        ProjectResponse projId,
         @JsonProperty("siteName")
         String siteName,
 

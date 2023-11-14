@@ -2,6 +2,7 @@ package com.grapplesoft.meil_backend.services.departmentService;
 
 import com.grapplesoft.meil_backend.models.entities.Department;
 import com.grapplesoft.meil_backend.models.request.DepartmentRequest;
+import com.grapplesoft.meil_backend.models.response.DepartmentResponse;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface DepartmentService {
     Department edit(DepartmentRequest departmentRequest);
 
     // Method signature for retrieving all Departments
-    List<Department> getall();
+    List<DepartmentResponse> getall();
 
     // Method signature for deleting a Department by its ID
     boolean delete(String id);
