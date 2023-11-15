@@ -38,4 +38,17 @@ public class TransactionsBuilder {
             return null;
         }
     }
+    public static Transaction forT109(Actiontype actionType, Projectsite projectsite, Employee emp) {
+        if (actionType != null && actionType.getAction().equals(ActionTypeEnum.T109.getValue())) {
+            return Transaction.builder()
+                    .actiondate(LocalDate.now())
+                    .fromprojectid(projectsite.getProjid())
+                    .actiontypeid(actionType)
+                    .employeeid(emp)
+                    .createdate(LocalDate.now())
+                    .build();
+        } else {
+            return null;
+        }
+    }
 }

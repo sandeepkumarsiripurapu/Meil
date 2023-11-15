@@ -516,14 +516,11 @@ public class TransactionServiceImpl implements TransactionService {
 
                 Actiontype action =new Actiontype();
                 if(Objects.equals(acttype, "T107")) {
-                    // Find the action type (T104)
                      action = this.getActionType(ActionTypeEnum.T107);
                 }
                 if(Objects.equals(acttype, "T110")) {
-                    // Find the action type (T104)
                      action = this.getActionType(ActionTypeEnum.T110);
                 }
-                // Find Hsefunctions for the source and target functions
 
                 if (fromproject == null) {
                     return Result.failure(new Exception("No record found in fromproject."));
@@ -585,7 +582,7 @@ public class TransactionServiceImpl implements TransactionService {
             if (emp != null) {
 
                 // Find the source and target project sites by their IDs
-                Project fromproject = this.projectRepository.findById(empt.fromprojectid()).orElse(null);
+
 
 
                 Actiontype action =new Actiontype();
@@ -601,13 +598,14 @@ public class TransactionServiceImpl implements TransactionService {
                     // Find the action type (T104)
                     action = this.getActionType(ActionTypeEnum.T118);
                 }
+                Project fromproject=null;
+        if(!Objects.equals(acttype, "T118")) {
+             fromproject = this.projectRepository.findById(empt.fromprojectid()).orElse(null);
+            if (fromproject == null) {
+                return Result.failure(new Exception("No record found in fromproject."));
+            }
 
-
-                if (fromproject == null) {
-                    return Result.failure(new Exception("No record found in fromproject."));
-                }
-
-
+        }
 
                 if (action == null) {
 
@@ -682,7 +680,7 @@ public class TransactionServiceImpl implements TransactionService {
                 if (projectSite != null) {
                     // Build a transaction based on ActionTypeEnum.T103 and other information
                     Actiontype action = this.getActionType(ActionTypeEnum.T109);
-                    Transaction tresult = this.addTransaction(TransactionsBuilder.forT103(action, projectSite, emp1, null,null));
+                    Transaction tresult = this.addTransaction(TransactionsBuilder.forT109(action, projectSite, emp1));
 
                     if (tresult == null) {
                         // Set an error response if the transaction is not found
@@ -697,7 +695,6 @@ public class TransactionServiceImpl implements TransactionService {
                 }
             } else {
                 // Set an error response if the employee is not found
-
                 return Result.failure(new Exception("Employee not found"));
             }
         }

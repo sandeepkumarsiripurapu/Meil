@@ -124,6 +124,45 @@ public class TransactionController extends BaseController {
         }
     }
 
+    @PostMapping(value = "/t109", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<ApiResponse<String>> DataChangeRequest(@RequestBody T109 empt) {
+        Result<Transaction> result = transactionService.T109(empt);
+        if (result.isSuccess()) {
+            return ResponseEntity.ok(ApiResponseBuilder.success(null, "Data Change Request Status sucessfully"));
+        } else {
+            return ResponseEntity.badRequest().body(ApiResponseBuilder.badRequest(result.error().getMessage()));
+        }
+    }
+
+    @PostMapping(value = "/t116", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<ApiResponse<String>> EmployeeTerminationAbsconded(@RequestBody T116andT117andT1118 empt) {
+        Result<Transaction> result = transactionService.T116andT117andT118(empt,"T116");
+        if (result.isSuccess()) {
+            return ResponseEntity.ok(ApiResponseBuilder.success(null, "Employee Termination Absconded Status sucessfully"));
+        } else {
+            return ResponseEntity.badRequest().body(ApiResponseBuilder.badRequest(result.error().getMessage()));
+        }
+    }
+    @PostMapping(value = "/t117", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<ApiResponse<String>> EmployeeDisciplinaryTermination(@RequestBody T116andT117andT1118 empt) {
+        Result<Transaction> result = transactionService.T116andT117andT118(empt,"T117");
+        if (result.isSuccess()) {
+            return ResponseEntity.ok(ApiResponseBuilder.success(null, "Employee Disciplinary Termination Status sucessfully"));
+        } else {
+            return ResponseEntity.badRequest().body(ApiResponseBuilder.badRequest(result.error().getMessage()));
+        }
+    }
+    @PostMapping(value = "/t118", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<ApiResponse<String>> EmployeeResignation(@RequestBody T116andT117andT1118 empt) {
+        Result<Transaction> result = transactionService.T116andT117andT118(empt,"T118");
+        if (result.isSuccess()) {
+            return ResponseEntity.ok(ApiResponseBuilder.success(null, "Employee Resignation sucessfully"));
+        } else {
+            return ResponseEntity.badRequest().body(ApiResponseBuilder.badRequest(result.error().getMessage()));
+        }
+    }
+
+
     @GetMapping(value = "/all", produces = "application/json")
     public ResponseEntity<ApiResponse<List<TransactionMapped>>> getAllTransactions() {
         List<TransactionMapped> transactionsMapped = new ArrayList<>();
