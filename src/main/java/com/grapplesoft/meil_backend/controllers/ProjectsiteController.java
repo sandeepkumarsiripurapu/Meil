@@ -6,6 +6,7 @@ import com.grapplesoft.meil_backend.models.entities.Address;
 import com.grapplesoft.meil_backend.models.entities.Projectsite;
 import com.grapplesoft.meil_backend.models.request.AddressRequest;
 import com.grapplesoft.meil_backend.models.request.ProjectsiteRequest;
+import com.grapplesoft.meil_backend.models.response.ApiResponse;
 import com.grapplesoft.meil_backend.repositories.ProjectSiteRepository;
 import com.grapplesoft.meil_backend.services.projectsiteService.ProjectsiteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,8 @@ public class ProjectsiteController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getall(){
-        return ResponseEntity.ok(projectsiteService.getall());
+    public ResponseEntity<ApiResponse> getall(){
+        return ResponseEntity.ok(ApiResponseBuilder.success(projectsiteService.getall(),null));
     }
 
     @DeleteMapping

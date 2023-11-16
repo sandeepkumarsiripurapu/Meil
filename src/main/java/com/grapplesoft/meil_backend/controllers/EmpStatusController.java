@@ -4,6 +4,7 @@ import com.grapplesoft.meil_backend.builders.ApiResponseBuilder;
 import com.grapplesoft.meil_backend.models.Result;
 import com.grapplesoft.meil_backend.models.entities.EmpStatus;
 import com.grapplesoft.meil_backend.models.request.EmpStatusRequest;
+import com.grapplesoft.meil_backend.models.response.ApiResponse;
 import com.grapplesoft.meil_backend.services.empstatusService.EmpStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,8 +39,9 @@ public class EmpStatusController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getall() {
-        return ResponseEntity.ok(empStatusService.getall());
+    public ResponseEntity<ApiResponse> getall() {
+
+        return ResponseEntity.ok(ApiResponseBuilder.success(empStatusService.getall(),null));
     }
 
     @DeleteMapping

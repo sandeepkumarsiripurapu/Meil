@@ -3,6 +3,7 @@ package com.grapplesoft.meil_backend.controllers;
 import com.grapplesoft.meil_backend.builders.ApiResponseBuilder;
 import com.grapplesoft.meil_backend.models.Result;
 import com.grapplesoft.meil_backend.models.request.ProjectRequest;
+import com.grapplesoft.meil_backend.models.response.ApiResponse;
 import com.grapplesoft.meil_backend.services.projectService.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,8 +37,9 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getall(){
-        return ResponseEntity.ok(projectService.getall());
+    public ResponseEntity<ApiResponse> getall(){
+
+        return ResponseEntity.ok(ApiResponseBuilder.success(projectService.getall(),null));
     }
 
     @DeleteMapping

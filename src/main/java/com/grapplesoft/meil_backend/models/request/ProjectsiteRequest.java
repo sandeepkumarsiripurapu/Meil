@@ -10,7 +10,7 @@ public record ProjectsiteRequest(
         Long sitemanagerid,
         Long projcoordid,
         Long courierpcode,
-        Long courierpmobile,
+        String courierpmobile,
         Integer addressid,
         BigDecimal latitude,
         BigDecimal longitude,

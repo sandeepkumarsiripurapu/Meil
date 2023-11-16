@@ -1,11 +1,13 @@
 package com.grapplesoft.meil_backend.services.projectsiteService;
 
+import com.grapplesoft.meil_backend.builders.ProjectsiteBuilder;
 import com.grapplesoft.meil_backend.models.Result;
 import com.grapplesoft.meil_backend.models.entities.Address;
 import com.grapplesoft.meil_backend.models.entities.Employee;
 import com.grapplesoft.meil_backend.models.entities.Project;
 import com.grapplesoft.meil_backend.models.entities.Projectsite;
 import com.grapplesoft.meil_backend.models.request.ProjectsiteRequest;
+import com.grapplesoft.meil_backend.models.response.ProjectsiteResponse;
 import com.grapplesoft.meil_backend.repositories.AddressRepository;
 import com.grapplesoft.meil_backend.repositories.EmployeeRepository;
 import com.grapplesoft.meil_backend.repositories.ProjectRepository;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.management.ObjectName;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,51 +47,50 @@ public class ProjectsiteServiceImpl implements ProjectsiteService{
         projectsite.setSitename(projectsiteRequest.sitename());
         projectsite.setLatitude(projectsiteRequest.latitude());
         projectsite.setLongitude(projectsiteRequest.longitude());
-
-
-
-
-
-//        projectsite.setAddressid(projectsiteRequest.addressid());
-//        projectsite.setCourierpmobile(projectsiteRequest.courierpmobile());
-
+        projectsite.setCourierpmobile(projectsiteRequest.courierpmobile());
+        projectsite.setCreatedate(LocalDate.now());
 
 
         Project project=projectRepository.findById(projectsiteRequest.projid()).orElse(null);
         if (project==null){
             return Result.failure(new Throwable("Projid is not Found"));
         }
+        projectsite.setProjid(project);
 
         Employee employee=employeeRepository.findById(projectsiteRequest.sitemanagerid()).orElse(null);
         if (employee==null){
             return  Result.failure(new Throwable("Site  Manager ID is not Found"));
         }
+        projectsite.setSitemanagerid(employee);
 
         Employee employee1=employeeRepository.findById(projectsiteRequest.projcoordid()).orElse(null);
         if (employee1==null){
             return  Result.failure(new Throwable("projcoordid is not Found"));
         }
+        projectsite.setProjcoordid(employee1);
 
         Employee employee2=employeeRepository.findById(projectsiteRequest.courierpcode()).orElse(null);
         if (employee2==null){
             return Result.failure(new Throwable("courierpcode is not Found"));
         }
+        projectsite.setCourierpcode(employee2);
 
-        Employee employee3=employeeRepository.findById(projectsiteRequest.courierpmobile()).orElse(null);
-        if (employee3==null){
-            return  Result.failure(new Throwable("courierpmobile is not Found"));
-        }
+
+
 
         Address address=addressRepository.findById(projectsiteRequest.addressid()).orElse(null);
         if (address==null){
             return  Result.failure(new Throwable("Address Id is not Found"));
         }
+        projectsite.setAddressid(address);
 
-        Employee employee4=employeeRepository.findById(projectsiteRequest.createuserid()).orElse(null);
-        if (employee4 == null) {
-            return  Result.failure(new Throwable("UserID is not Found"));
+        if (projectsiteRequest.createuserid()!=null) {
+            Employee employee4 = employeeRepository.findById(projectsiteRequest.createuserid()).orElse(null);
+            if (employee4 == null) {
+                return Result.failure(new Throwable("UserID is not Found"));
+            }
+            projectsite.setCreateuserid(employee4);
         }
-
         Projectsite projectsite1=projectSiteRepository.save(projectsite);
         return Result.success(projectsite1);
     }
@@ -100,57 +102,65 @@ public class ProjectsiteServiceImpl implements ProjectsiteService{
             projectsite.setSitename(projectsiteRequest.sitename());
             projectsite.setLatitude(projectsiteRequest.latitude());
             projectsite.setLongitude(projectsiteRequest.longitude());
+            projectsite.setCourierpmobile(projectsiteRequest.courierpmobile());
+            projectsite.setEditdate(LocalDate.now());
 
-
-//        projectsite.setAddressid(projectsiteRequest.addressid());
-//        projectsite.setCourierpmobile(projectsiteRequest.courierpmobile());
 
 
             Project project = projectRepository.findById(projectsiteRequest.projid()).orElse(null);
             if (project == null) {
                 return Result.failure(new Throwable("Projid is not Found"));
             }
+            projectsite.setProjid(project);
 
             Employee employee = employeeRepository.findById(projectsiteRequest.sitemanagerid()).orElse(null);
             if (employee == null) {
                 return Result.failure(new Throwable("Site  Manager ID is not Found"));
             }
+            projectsite.setSitemanagerid(employee);
 
             Employee employee1 = employeeRepository.findById(projectsiteRequest.projcoordid()).orElse(null);
             if (employee1 == null) {
                 return Result.failure(new Throwable("projcoordid is not Found"));
             }
+            projectsite.setProjcoordid(employee1);
 
             Employee employee2 = employeeRepository.findById(projectsiteRequest.courierpcode()).orElse(null);
             if (employee2 == null) {
                 return Result.failure(new Throwable("courierpcode is not Found"));
             }
+            projectsite.setCourierpcode(employee2);
 
-            Employee employee3 = employeeRepository.findById(projectsiteRequest.courierpmobile()).orElse(null);
-            if (employee3 == null) {
-                return Result.failure(new Throwable("courierpmobile is not Found"));
-            }
 
             Address address = addressRepository.findById(projectsiteRequest.addressid()).orElse(null);
             if (address == null) {
                 return Result.failure(new Throwable("Address Id is not Found"));
             }
+            projectsite.setAddressid(address);
 
-            Employee employee4 = employeeRepository.findById(projectsiteRequest.edituserid()).orElse(null);
-            if (employee4 == null) {
-                return Result.failure(new Throwable("Edit UserID is not Found"));
+            if (projectsiteRequest.edituserid()!=null) {
+                Employee employee4 = employeeRepository.findById(projectsiteRequest.edituserid()).orElse(null);
+                if (employee4 == null) {
+                    return Result.failure(new Throwable("Edit UserID is not Found"));
+                }
+                projectsite.setEdituserid(employee4);
             }
+
            Projectsite projectsite1=projectSiteRepository.save(projectsite);
             return Result.success(projectsite1);
-        }else {
+        }  else {
             return null;
         }
     }
 
     @Override
-    public List<Projectsite> getall() {
+    public List<ProjectsiteResponse> getall() {
         List<Projectsite> projectsiteList=projectSiteRepository.findAll();
-        return projectsiteList;
+        List<ProjectsiteResponse> projectsiteResponses=new ArrayList<>();
+        for (Projectsite projectsite:projectsiteList){
+            projectsiteResponses.add(ProjectsiteBuilder.generateresp(projectsite));
+        }
+        return projectsiteResponses;
     }
 
     @Override

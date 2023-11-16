@@ -3,6 +3,7 @@ package com.grapplesoft.meil_backend.controllers;
 import com.grapplesoft.meil_backend.builders.ApiResponseBuilder;
 import com.grapplesoft.meil_backend.models.entities.Sector;
 import com.grapplesoft.meil_backend.models.request.SectorRequest;
+import com.grapplesoft.meil_backend.models.response.ApiResponse;
 import com.grapplesoft.meil_backend.services.sectorService.SectorService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,9 @@ public class SectorController {
 
     // Method to handle HTTP GET requests for retrieving all sectors
     @GetMapping
-    public ResponseEntity<?> getall() {
-        return ResponseEntity.ok(sectorService.getall());
+    public ResponseEntity<ApiResponse> getall() {
+
+        return ResponseEntity.ok(ApiResponseBuilder.success(sectorService.getall(),null));
     }
     // Method to handle HTTP DELETE requests for deleting a sector
     @DeleteMapping

@@ -4,6 +4,7 @@ import com.grapplesoft.meil_backend.builders.ApiResponseBuilder;
 import com.grapplesoft.meil_backend.models.Result;
 import com.grapplesoft.meil_backend.models.entities.Status;
 import com.grapplesoft.meil_backend.models.request.StatusRequest;
+import com.grapplesoft.meil_backend.models.response.ApiResponse;
 import com.grapplesoft.meil_backend.services.statusService.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +38,12 @@ public class StatusController {
             return ResponseEntity.badRequest().body(res.error().getMessage());
         }
     }
-
     @GetMapping
+    public ResponseEntity<ApiResponse>getall(){
+        return ResponseEntity.ok(ApiResponseBuilder.success(statusService.getall(),null));
+    }
+
+    @DeleteMapping
 
     public ResponseEntity<?> delete(@RequestBody Status status){
         if (statusService.delete(status.getId())){

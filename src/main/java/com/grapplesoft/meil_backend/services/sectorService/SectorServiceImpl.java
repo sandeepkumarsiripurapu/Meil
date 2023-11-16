@@ -1,7 +1,9 @@
 package com.grapplesoft.meil_backend.services.sectorService;
 
+import com.grapplesoft.meil_backend.builders.SectorBuilder;
 import com.grapplesoft.meil_backend.models.entities.Sector;
 import com.grapplesoft.meil_backend.models.request.SectorRequest;
+import com.grapplesoft.meil_backend.models.response.SectorResponse;
 import com.grapplesoft.meil_backend.repositories.EmployeeRepository;
 import com.grapplesoft.meil_backend.repositories.SectorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +39,8 @@ public class SectorServiceImpl implements  SectorService{
             // Retrieving an employee by ID from the EmployeeRepository and setting it as creator
             sector1.setCreateuserid(emprepo.findById(sector.createuserid()).orElse(null));
         }
+
+
         // Setting the head of household's employee ID for the sector
         sector1.setHohsemgrid(emprepo.findById(sector.hohsemgrid()).orElse(null));
         // Saving the sector to the database
@@ -70,10 +75,13 @@ public class SectorServiceImpl implements  SectorService{
 
     // Method to retrieve all sectors
      @Override
-    public List<Sector> getall() {
-         // Retrieving all sectors from the repository
-        List<Sector> sectorList=sectorRepository.findAll();
-        return sectorList;
+    public List<SectorResponse> getall() {
+         List<Sector> sectorList=sectorRepository.findAll();
+         List<SectorResponse> sectorResponses=new ArrayList<>();
+         for (Sector sector:sectorList){
+             sectorResponses.add(SectorBuilder.generatesector(sector));
+         }
+         return sectorResponses;
     }
 
     // Method to delete a sector by its ID

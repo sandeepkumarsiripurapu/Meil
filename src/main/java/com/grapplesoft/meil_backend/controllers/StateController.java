@@ -4,6 +4,7 @@ import com.grapplesoft.meil_backend.builders.ApiResponseBuilder;
 import com.grapplesoft.meil_backend.builders.StateBuilder;
 import com.grapplesoft.meil_backend.models.entities.State;
 import com.grapplesoft.meil_backend.models.request.StateRequest;
+import com.grapplesoft.meil_backend.models.response.ApiResponse;
 import com.grapplesoft.meil_backend.services.StateService.Stateser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,9 +41,9 @@ public class StateController {
 
     // Method to handle HTTP GET requests for retrieving all states
     @GetMapping
-    public ResponseEntity<?> getall() {
+    public ResponseEntity<ApiResponse> getall() {
         var res = stateservice.getall();
-        return ResponseEntity.ok(res);
+        return ResponseEntity.ok(ApiResponseBuilder.success(res,null));
     }
 
     // Method to handle HTTP DELETE requests for deleting a state

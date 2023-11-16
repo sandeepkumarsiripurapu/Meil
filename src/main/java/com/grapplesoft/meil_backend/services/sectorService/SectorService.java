@@ -3,6 +3,7 @@ package com.grapplesoft.meil_backend.services.sectorService;
 import com.grapplesoft.meil_backend.models.Result;
 import com.grapplesoft.meil_backend.models.entities.Sector;
 import com.grapplesoft.meil_backend.models.request.SectorRequest;
+import com.grapplesoft.meil_backend.models.response.SectorResponse;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface SectorService {
    Sector insert(SectorRequest sector);
 
     // Method signature for retrieving all sectors
-    List<Sector> getall();
+    List<SectorResponse> getall();
 
     // Method signature for deleting a sector by its ID
     boolean delete(String id);

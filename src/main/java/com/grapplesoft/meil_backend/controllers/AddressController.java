@@ -4,6 +4,7 @@ import com.grapplesoft.meil_backend.builders.ApiResponseBuilder;
 import com.grapplesoft.meil_backend.models.Result;
 import com.grapplesoft.meil_backend.models.entities.Address;
 import com.grapplesoft.meil_backend.models.request.AddressRequest;
+import com.grapplesoft.meil_backend.models.response.ApiResponse;
 import com.grapplesoft.meil_backend.services.addressService.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails;
@@ -39,8 +40,8 @@ public class AddressController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getall(){
-        return ResponseEntity.ok(addressService.getall());
+    public ResponseEntity<ApiResponse> getall(){
+        return ResponseEntity.ok(ApiResponseBuilder.success(addressService.getall(),null));
     }
 
     @DeleteMapping

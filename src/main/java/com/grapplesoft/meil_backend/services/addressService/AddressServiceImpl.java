@@ -53,7 +53,8 @@ public class AddressServiceImpl  implements AddressService{
         if (employee==null){
             return Result.failure(new Throwable("Created Employee is Not Found"));
         }
-
+        address.setCreateuserid(employee);
+        address.setStatecode(state);
         Address address1=addressRepository.save(address);
         return Result.success(address1);
 

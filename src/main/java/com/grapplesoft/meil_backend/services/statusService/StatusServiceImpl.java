@@ -1,15 +1,18 @@
 package com.grapplesoft.meil_backend.services.statusService;
 
+import com.grapplesoft.meil_backend.builders.StatusBuilder;
 import com.grapplesoft.meil_backend.models.Result;
 import com.grapplesoft.meil_backend.models.entities.Employee;
 import com.grapplesoft.meil_backend.models.entities.Status;
 import com.grapplesoft.meil_backend.models.request.StatusRequest;
+import com.grapplesoft.meil_backend.models.response.StatusResponse;
 import com.grapplesoft.meil_backend.repositories.EmployeeRepository;
 import com.grapplesoft.meil_backend.repositories.StatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,9 +64,13 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
-    public List<Status> getall() {
-        List <Status> statusList=statusRepository.findAll();
-        return statusList;
+    public List<StatusResponse> getall() {
+       List<Status> statusList=statusRepository.findAll();
+       List<StatusResponse> statusResponses=new ArrayList<>();
+       for (Status status:statusList){
+           statusResponses.add(StatusBuilder.statusResponse(status));
+       }
+       return statusResponses;
     }
 
     @Override

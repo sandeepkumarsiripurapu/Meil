@@ -36,9 +36,8 @@ public class DepartmentController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getall(){
-
-        return ResponseEntity.ok(departmentService.getall());
+    public ResponseEntity<ApiResponse> getall(){
+        return ResponseEntity.ok(ApiResponseBuilder.success(departmentService.getall(),null));
     }
 
     @DeleteMapping

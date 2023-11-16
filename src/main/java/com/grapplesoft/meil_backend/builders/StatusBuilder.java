@@ -11,7 +11,7 @@ public class StatusBuilder {
                 status.getCreatedate(),
                 status.getCreateuserid()!=null? EmployeeBuilder.buildEmployeeWithoutCreds(status.getCreateuserid()):null,
                 status.getEditdate(),
-                status.getEditdate()!=null?EmployeeBuilder.buildEmployeeWithoutCreds(status.getEdituserid()):null,
+                status.getEdituserid()!=null?EmployeeBuilder.buildEmployeeWithoutCreds(status.getEdituserid()):null,
                 status.getIsdeleted()
         );
     }

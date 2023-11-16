@@ -1,15 +1,18 @@
 package com.grapplesoft.meil_backend.services.empstatusService;
 
+import com.grapplesoft.meil_backend.builders.EmployeeStatusBuilder;
 import com.grapplesoft.meil_backend.models.Result;
 import com.grapplesoft.meil_backend.models.entities.EmpStatus;
 import com.grapplesoft.meil_backend.models.entities.Employee;
 import com.grapplesoft.meil_backend.models.request.EmpStatusRequest;
+import com.grapplesoft.meil_backend.models.response.EmpStatusResponse;
 import com.grapplesoft.meil_backend.repositories.EmpStatusRepository;
 import com.grapplesoft.meil_backend.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +32,7 @@ public class EmpStatusServiceImpl implements EmpStatusService{
         empStatus.setEmpstatus(empStatusRequest.empstatus());
         empStatus.setCreatedate(LocalDate.now());
 
-        if (empStatusRequest.createuserid()==null){
+        if (empStatusRequest.createuserid()!=null){
             Employee employee=employeeRepository.findById(empStatusRequest.createuserid()).orElse(null);
             empStatus.setCreateuserid(employee);
         }
@@ -43,7 +46,7 @@ public class EmpStatusServiceImpl implements EmpStatusService{
         if (empStatus !=null){
             empStatus.setEmpstatus(empStatusRequest.empstatus());
             empStatus.setEditdate(LocalDate.now());
-            if (empStatusRequest.edituserid()==null){
+            if (empStatusRequest.edituserid()!=null){
                 Employee employee=employeeRepository.findById(empStatusRequest.edituserid()).orElse(null);
                 empStatus.setEdituserid(employee);
             }
@@ -55,9 +58,13 @@ public class EmpStatusServiceImpl implements EmpStatusService{
     }
 
     @Override
-    public List<EmpStatus> getall() {
-        List<EmpStatus> empStatusList=empStatusRepository.findAll();
-        return empStatusList;
+    public List<EmpStatusResponse> getall() {
+       List<EmpStatus> empStatusList=empStatusRepository.findAll();
+       List<EmpStatusResponse> empStatusResponses=new ArrayList<>();
+       for (EmpStatus empStatus:empStatusList){
+           empStatusResponses.add(EmployeeStatusBuilder.genareteresp(empStatus));
+       }
+       return empStatusResponses;
     }
 
     @Override

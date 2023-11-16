@@ -5,6 +5,7 @@ import com.grapplesoft.meil_backend.models.entities.Address;
 import com.grapplesoft.meil_backend.models.entities.Project;
 import com.grapplesoft.meil_backend.models.request.AddressRequest;
 import com.grapplesoft.meil_backend.models.request.ProjectRequest;
+import com.grapplesoft.meil_backend.models.response.ProjectResponse;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface ProjectService {
 
     Result<Project> edit(ProjectRequest projectRequest);
 
-    List<Project> getall();
+    List<ProjectResponse> getall();
 
     boolean delete(Long id);
 }

@@ -3,6 +3,7 @@ package com.grapplesoft.meil_backend.controllers;
 import com.grapplesoft.meil_backend.builders.ApiResponseBuilder;
 import com.grapplesoft.meil_backend.models.entities.Hsefunction;
 import com.grapplesoft.meil_backend.models.request.HseFunctionRequest;
+import com.grapplesoft.meil_backend.models.response.ApiResponse;
 import com.grapplesoft.meil_backend.services.hsefunctionService.HsefunctionImp;
 import com.grapplesoft.meil_backend.services.hsefunctionService.HsefunctionService;
 import jakarta.validation.constraints.NotNull;
@@ -38,8 +39,9 @@ public class HseFunctionController {
     }
 
     @GetMapping
-    public  ResponseEntity<?> getall(){
-        return ResponseEntity.ok(hsefunctionService.getall());
+    public  ResponseEntity<ApiResponse> getall(){
+
+        return ResponseEntity.ok(ApiResponseBuilder.success(hsefunctionService.getall(),null));
     }
 
     @DeleteMapping
