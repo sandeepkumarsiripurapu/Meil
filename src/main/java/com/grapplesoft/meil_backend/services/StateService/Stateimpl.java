@@ -82,7 +82,7 @@ public class Stateimpl implements Stateser {
     @Override
     public List<StateResponse> getall() {
         // Retrieving all states from the repository
-        List<State> res = staterepository.findAll();
+        List<State> res = staterepository.findAllNotDeleted();
         List<StateResponse> stsresp=new ArrayList<>();
         for(State sts:res){
             stsresp.add(StateBuilder.buildStateResponse(sts));

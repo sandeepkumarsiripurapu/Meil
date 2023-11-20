@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface StateRepository extends JpaRepository<State, String> {
 
+    @Query(value = "SELECT * FROM state WHERE `isdeleted` = 0", nativeQuery = true)
+    List<State> findAllNotDeleted();
     State findByStatecodeAndIsdeleted(String stc,boolean sts);
 
     @Query(value = "SELECT * FROM state WHERE isdeleted is null",nativeQuery = true)
