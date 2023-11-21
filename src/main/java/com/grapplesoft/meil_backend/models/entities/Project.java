@@ -26,7 +26,8 @@ import java.time.LocalDate;
 })
 public class Project {
     @Id
-    @Column(name = "projid", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "projid")
     private Long id;
 
     @Size(max = 150)

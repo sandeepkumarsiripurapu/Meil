@@ -35,7 +35,7 @@ public class AddressServiceImpl  implements AddressService{
     public Result<Address> insert(AddressRequest addressRequest) {
 
         Address address=new Address();
-        address.setId(addressRequest.addressid());
+//        address.setId(addressRequest.addressid());
         address.setAddressline1(addressRequest.addressline1());
         address.setAddressline2(addressRequest.addressline2());
         address.setCountryname(addressRequest.countryname());
@@ -49,11 +49,13 @@ public class AddressServiceImpl  implements AddressService{
         if (state==null){
             return Result.failure(new Throwable("No State Code Found"));
         }
-        Employee employee=employeeRepository.findById(addressRequest.createuserid()).orElse(null);
-        if (employee==null){
-            return Result.failure(new Throwable("Created Employee is Not Found"));
+        if(addressRequest.createuserid()!=null) {
+            Employee employee = employeeRepository.findById(addressRequest.createuserid()).orElse(null);
+            if (employee == null) {
+                return Result.failure(new Throwable("Created Employee is Not Found"));
+            }
+            address.setCreateuserid(employee);
         }
-        address.setCreateuserid(employee);
         address.setStatecode(state);
         Address address1=addressRepository.save(address);
         return Result.success(address1);
@@ -76,12 +78,15 @@ public class AddressServiceImpl  implements AddressService{
             if (state == null) {
                 return Result.failure(new Throwable("No State Code Found"));
             }
-            Employee employee = employeeRepository.findById(addressRequest.edituserid()).orElse(null);
-            if (employee == null) {
-                return Result.failure(new Throwable("Created Employee is Not Found"));
+            if(addressRequest.edituserid()!=null) {
+                Employee employee = employeeRepository.findById(addressRequest.edituserid()).orElse(null);
+                if (employee == null) {
+                    return Result.failure(new Throwable("Created Employee is Not Found"));
+                }
+                address.setEdituserid(employee);
             }
-//            return addressRepository.save(address);
-            return null;
+           return Result.success(addressRepository.save(address));
+
 
         } else {
             return null;

@@ -17,7 +17,8 @@ import java.time.LocalDate;
 })
 public class Status {
     @Id
-    @Column(name = "statusid", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "statusid")
     private Integer id;
 
     @Size(max = 200)

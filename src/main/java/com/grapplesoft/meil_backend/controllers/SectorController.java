@@ -21,7 +21,7 @@ public class SectorController {
     public ResponseEntity<?> add(@RequestBody SectorRequest sector) {
         Sector sec= sectorService.insert(sector);
         if (sec != null) {
-            return ResponseEntity.ok(ApiResponseBuilder.success(null, "Sector added successfully"));
+            return ResponseEntity.ok(ApiResponseBuilder.success(sec, "Sector added successfully"));
         } else {
             return ResponseEntity.badRequest().body(ApiResponseBuilder.badRequest("some thing went wrong to add sector"));
         }

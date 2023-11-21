@@ -1,6 +1,7 @@
 package com.grapplesoft.meil_backend.services.sectorService;
 
 import com.grapplesoft.meil_backend.builders.SectorBuilder;
+import com.grapplesoft.meil_backend.models.entities.Employee;
 import com.grapplesoft.meil_backend.models.entities.Sector;
 import com.grapplesoft.meil_backend.models.request.SectorRequest;
 import com.grapplesoft.meil_backend.models.response.SectorResponse;
@@ -40,9 +41,13 @@ public class SectorServiceImpl implements  SectorService{
             sector1.setCreateuserid(emprepo.findById(sector.createuserid()).orElse(null));
         }
 
-
+        Employee hoh=emprepo.findById(sector.hohsemgrid()).orElse(null);
         // Setting the head of household's employee ID for the sector
-        sector1.setHohsemgrid(emprepo.findById(sector.hohsemgrid()).orElse(null));
+        if(hoh!=null) {
+            sector1.setHohsemgrid(hoh);
+        }else{
+            return null;
+        }
         // Saving the sector to the database
         Sector result=sectorRepository.save(sector1);
         // Creating a response map with status, message, and data

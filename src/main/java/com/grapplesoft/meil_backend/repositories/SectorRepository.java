@@ -12,24 +12,5 @@ public interface SectorRepository extends JpaRepository<Sector, String> {
     @Query(value = "SELECT * FROM sector WHERE isdeleted is null",nativeQuery = true)
     List<Sector> findAll();
     Sector findBySectorcodeAndIsdeleted(String stc, boolean sts);
-    // This interface extends JpaRepository, providing several built-in methods for CRUD operations.
 
-    // JpaRepository is a part of Spring Data and extends PagingAndSortingRepository, which, in turn, extends CrudRepository.
-    // It includes methods like save(), findById(), findAll(), deleteById(), and others out-of-the-box.
-
-    // The purpose of this repository interface is to manage database operations related to the Sector entity.
-
-    // The generic types indicate that this repository is dealing with the 'Sector' entity and uses a 'String' type for its primary key.
-
-    // Spring Data JPA automatically generates implementations for these methods at runtime based on the method signatures defined in the interface.
-
-    // save() method is used to persist or update entities into the database.
-    // findById() is used to retrieve an entity by its ID.
-    // findAll() is used to retrieve all entities of the Sector type from the database.
-    // deleteById() is used to delete an entity by its ID.
-
-    // JpaRepository simplifies the data access layer and provides the necessary CRUD functionalities,
-    // allowing the service layer to interact with the database without explicitly implementing these methods.
-
-    // The provided interface acts as a contract for managing Sector entities and leverages Spring Data JPA's features for database operations.
-}
+    }

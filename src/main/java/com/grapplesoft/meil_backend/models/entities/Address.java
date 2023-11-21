@@ -17,7 +17,8 @@ import java.time.LocalDate;
 })
 public class Address {
     @Id
-    @Column(name = "addressid", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "addressid")
     private Integer id;
 
     @Size(max = 100)

@@ -39,7 +39,7 @@ public class ProjectServiceImpl implements  ProjectService{
     public Result<Project> insert(ProjectRequest projectRequest) {
 
         Project project = new Project();
-        project.setId(projectRequest.projid());
+       // project.setId(projectRequest.projid());
         project.setProjname(projectRequest.projname());
 
         if (projectRequest.dupprojid() != null) {

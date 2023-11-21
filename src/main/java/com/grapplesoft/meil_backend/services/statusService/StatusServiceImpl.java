@@ -29,7 +29,7 @@ public class StatusServiceImpl implements StatusService {
     @Override
     public Result<Status> insert(StatusRequest statusRequest) {
         Status status = new Status();
-        status.setId(statusRequest.statusid());
+       // status.setId(statusRequest.statusid());
         status.setStatus(statusRequest.status());
         status.setCreatedate(LocalDate.now());
         if(statusRequest.createuserid()!=null) {

@@ -16,6 +16,7 @@ import java.time.LocalDate;
 })
 public class EmpStatus {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "empstatusid", nullable = false)
     private Integer id;
 

@@ -27,8 +27,7 @@ import java.time.LocalDate;
 public class Projectsite {
     @Id
     @Column(name = "projsiteid", unique = true, nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    @GenericGenerator(name = "native")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
